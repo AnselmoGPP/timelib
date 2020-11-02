@@ -1,8 +1,7 @@
 
-#include "header.hpp"
+#include "timelib.hpp"
 
 int main()
 {
-	printer obj;
-	obj.say_hello();
+	timerSet timer;
 }

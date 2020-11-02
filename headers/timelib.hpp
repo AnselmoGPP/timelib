@@ -2,19 +2,51 @@
 #include <chrono>
 #include <thread>
 
-// Object used for getting the time between events. Call get_delta_time() for getting the time increment between two consecutives calls to this function.
-class timer;
-
-// Object used for getting the time between events. Call start() and end() for getting the time increment between both calls.
-
+// Object used for getting the time between events. Two ways:
+//     get_delta_time(): Get the time increment (deltaTime) between two consecutive calls to this function.
+//     start() & end(): Get the time increment (deltaTime) between a call to start() and end(). <<<<<<<<<<<<<<<<<<<<<<
+class timer
+{
 // Get date and time (all in numbers)
 
 // Get date and time (months and week days are strings)
+};
 
+// Class used in the render loop (OpenGL, Vulkan, etc.) for different time-related purposes (frame counting, delta time, current time, fps...)
+class timerSet
+{
+    std::chrono::high_resolution_clock::time_point timeZero;
+    std::chrono::high_resolution_clock::time_point lastTime;
+    std::chrono::high_resolution_clock::time_point currentTime;
 
-// Definitions -------------------------------------------------------------------------------------------
+    long double currentTimeSeconds;
 
-class timer
+    long double deltaTime;
+
+    int FPS;
+    int maxFPS;
+
+    size_t frameCounter;
+
+public:
+    timerSet(int maxFPS = 0);
+
+    void        startTime();            // Set starting time for the chronometer (startingTime)
+    void        computeDeltaTime();     // Compute frame's duration (time between two calls to this)
+    void        printTimeData();        // Print relevant values
+
+    long double getDeltaTime();         // Returns time (seconds) increment between frames (deltaTime)
+    long double getTime();              // Returns time (seconds) when computeDeltaTime() was called
+    long double getTimeNow();           // Returns time (seconds) since timeZero, at the moment of calling GetTimeNow()
+    int         getFPS();               // Get FPS
+    size_t      getFrameCounter();      // Get frame number (depends on the number of times getDeltaTime() was called)
+
+    void        setMaxFPS(int fps);     // Given a maximum fps, put thread to sleep to get it
+};
+
+// Others -------------------------------------------------------------------
+
+class timer_2
 {
 public:
     long deltaTime;
@@ -26,7 +58,7 @@ private:
     std::chrono::high_resolution_clock::time_point lastTime, currentTime;
 };
 
-void timer::get_delta_time()
+void timer_2::get_delta_time()
 {
     if(first_call)  // Executed only once (first call)
     {
@@ -41,7 +73,7 @@ void timer::get_delta_time()
     lastTime = currentTime;
 }
 
-void timer::fps_control(unsigned int frequency)
+void timer_2::fps_control(unsigned int frequency)
 {
     get_delta_time();
 

@@ -3,8 +3,11 @@ PROJECT(timelib)
 
 ADD_EXECUTABLE( ${PROJECT_NAME}
 	src/main.cpp
+	src/timelib.cpp
+
+	headers/timelib.hpp
 )
 
 TARGET_INCLUDE_DIRECTORIES( ${PROJECT_NAME} PUBLIC
-        header
+        headers
 )
